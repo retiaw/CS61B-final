@@ -24,7 +24,7 @@ public class LinkedListDeque<T> {
         newNode.next = sentinel.next;
         newNode.prev = sentinel;
         // right:
-        newNode.next.prev = newNode;
+        sentinel.next.prev = newNode;
         // sentinel:
         sentinel.next = newNode;
 
@@ -38,7 +38,7 @@ public class LinkedListDeque<T> {
         newNode.prev = sentinel.prev;
         newNode.next = sentinel;
         // left:
-        newNode.prev.next = newNode;
+        sentinel.prev.next = newNode;
         // sentinel:
         sentinel.prev = newNode;
 
@@ -63,10 +63,13 @@ public class LinkedListDeque<T> {
         if (mySize == 0) {
             return null;
         }
-        T ret = sentinel.next.data;
-        sentinel.next = sentinel.next.next;
+        Node toBeDeleted = sentinel.next;
+        T ret = toBeDeleted.data;
+        sentinel.next = toBeDeleted.next;
+        toBeDeleted.next.prev = sentinel;
         mySize--;
 
+        toBeDeleted = null;
         return ret;
     }
 
@@ -74,10 +77,13 @@ public class LinkedListDeque<T> {
         if (mySize == 0) {
             return null;
         }
-        T ret = sentinel.prev.data;
-        sentinel.prev = sentinel.prev.prev;
+        Node toBeDeleted = sentinel.prev;
+        T ret = toBeDeleted.data;
+        sentinel.prev = toBeDeleted.prev;
+        toBeDeleted.prev.next = sentinel;
         mySize--;
 
+        toBeDeleted = null;
         return ret;
     }
 

@@ -12,7 +12,7 @@ public class ArrayDeque<T> {
         return Math.floorMod(tail, capacity);
     }
 
-    ArrayDeque() {
+    public ArrayDeque() {
         head = 0;
         tail = 0;
 

@@ -60,10 +60,6 @@ public class ArrayDeque<T> {
 
     public void addFirst(T value) {
         checkResize();
-        if (mySize == 0) {
-            elems[head] = value;
-            mySize++;
-        }
         head--;
         elems[Head()] = value;
         mySize++;
@@ -71,10 +67,6 @@ public class ArrayDeque<T> {
 
     public void addLast(T value) {
         checkResize();
-        if (mySize == 0) {
-            elems[tail] = value;
-            mySize++;
-        }
         tail++;
         elems[Tail()] = value;
         mySize++;
@@ -124,8 +116,13 @@ public class ArrayDeque<T> {
 
     public T get(int index) {
         int i = 0, j = 0;
-        for (i = head, j = 0; i <= tail && j < index; i++, j++);
-        if (i > tail) {
+        for (i = head, j = 0; i <= tail && j < index; i++, j++) {
+            if (i == 0) {
+                i++;
+            }
+        };
+        
+        if (j != index) {
             return null;
         } else {
             return elems[Math.floorMod(i, capacity)];

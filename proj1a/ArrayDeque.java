@@ -56,7 +56,7 @@ public class ArrayDeque<T> {
     public void addFirst(T item) {
         checkResize();
         if (mySize == 0) {
-            elems[head] = item;
+            elems[getHead()] = item;
             mySize++;
         } else {
             head--;
@@ -69,7 +69,7 @@ public class ArrayDeque<T> {
     public void addLast(T item) {
         checkResize();
         if (mySize == 0) {
-            elems[tail] = item;
+            elems[getTail()] = item;
             mySize++;
         } else {
             tail++;

@@ -13,7 +13,7 @@ public class ArrayDeque<T> {
 
     public ArrayDeque() {
         head = 0;
-        tail = 1;
+        tail = 0;
 
         mySize = 0;
         capacity = BLOCK;
@@ -55,7 +55,7 @@ public class ArrayDeque<T> {
 
     public void addFirst(T item) {
         checkResize();
-        if (head == 0) {
+        if (mySize == 0) {
             elems[head] = item;
             mySize++;
         } else {
@@ -68,7 +68,7 @@ public class ArrayDeque<T> {
 
     public void addLast(T item) {
         checkResize();
-        if (tail == 1) {
+        if (mySize == 0) {
             elems[tail] = item;
             mySize++;
         } else {
@@ -89,7 +89,8 @@ public class ArrayDeque<T> {
 
     public void printDeque() {
         for (int i = head; i <= tail; i++) {
-            System.out.print(Math.floorMod(i, capacity) + " ");
+            // T demo = elems[Math.floorMod(i, capacity)];
+            System.out.print(elems[Math.floorMod(i, capacity)] + " ");
         }
     }
 

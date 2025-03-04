@@ -1,56 +1,51 @@
 public class ArrayDeque<T> {
-
     private int head, tail;
     private int mySize, capacity;
     private T[] elems;
+    private static final int BLOCK = 8;
 
-    private int Head() {
+    private int getHead() {
         return Math.floorMod(head, capacity);
     }
-
-    private int Tail() {
+    private int getTail() {
         return Math.floorMod(tail, capacity);
     }
 
     public ArrayDeque() {
         head = 0;
-        tail = 0;
+        tail = 1;
 
-        capacity = 8;
         mySize = 0;
+        capacity = BLOCK;
 
         elems = (T[]) new Object[capacity];
     }
 
     private void checkResize() {
-        if (capacity < 16 && mySize < capacity) {
+        if (mySize < capacity && capacity < 16) {
             return ;
-        } else if (4 * mySize >= capacity && mySize < capacity) {
+        } else if (mySize < capacity && mySize * 4 >= capacity) {
             return ;
         }
         // need more capacity:
-        if (mySize >= capacity) {
+        if (mySize == capacity) {
             T[] newElems = (T[]) new Object[capacity * 2];
             // copy:
-            for (int i = 0; i <= Tail(); i++) {
-                newElems[i] = elems[i];
-            }
-            for (int i = Head(); i < capacity; i++) {
-                newElems[i + capacity] = elems[i];
+            for (int i = head; i <= tail; i++) {
+                newElems[Math.floorMod(i, capacity * 2)] = elems[Math.floorMod(i, capacity)];
+                elems[Math.floorMod(i, capacity)] = null;
             }
             // modify:
-            elems = newElems;
             capacity *= 2;
+            elems = newElems;
         }
         // need less capacity:
         if (4 * mySize < capacity) {
-            T[] newElems = (T[]) new Object[mySize * 4];
+            T[] newElems = (T[]) new Object[4 * mySize];
             // copy:
-            for (int i = 0; i <= Tail(); i++) {
-                newElems[i] = elems[i];
-            }
-            for (int i = capacity - 1, j = mySize * 4 - 1; i >= Head(); i--, j--) {
-                newElems[j] = elems[i];
+            for (int i = head; i <= tail; i++) {
+                newElems[Math.floorMod(i, 4 * mySize)] = elems[Math.floorMod(i, capacity)];
+                elems[Math.floorMod(i, capacity)] = null;
             }
             // modify:
             capacity = mySize * 4;
@@ -58,33 +53,43 @@ public class ArrayDeque<T> {
         }
     }
 
-    public void addFirst(T value) {
+    public void addFirst(T item) {
         checkResize();
-        head--;
-        elems[Head()] = value;
-        mySize++;
+        if (head == 0) {
+            elems[head] = item;
+            mySize++;
+        } else {
+            head--;
+            elems[getHead()] = item;
+            mySize++;
+        }
+        checkResize();
     }
 
-    public void addLast(T value) {
+    public void addLast(T item) {
         checkResize();
-        tail++;
-        elems[Tail()] = value;
-        mySize++;
+        if (tail == 1) {
+            elems[tail] = item;
+            mySize++;
+        } else {
+            tail++;
+            elems[getTail()] = item;
+            mySize++;
+        }
+        checkResize();
     }
 
     public boolean isEmpty() {
         return (mySize == 0);
     }
+
     public int size() {
         return mySize;
     }
 
     public void printDeque() {
-        for (int i = head; i < 0; i++) {
-            System.out.print(elems[Math.floorMod(i, capacity)] + " ");
-        }
-        for (int i = 0; i <= tail; i++) {
-            System.out.print(elems[Math.floorMod(i, capacity)] + " ");
+        for (int i = head; i <= tail; i++) {
+            System.out.print(Math.floorMod(i, capacity) + " ");
         }
     }
 
@@ -92,12 +97,13 @@ public class ArrayDeque<T> {
         if (mySize == 0) {
             return null;
         }
-        T ret = elems[Head()];
-        elems[Head()] = null;
+        checkResize();
+        T ret = elems[getHead()];
+        elems[getHead()] = null;
         head++;
-
         mySize--;
         checkResize();
+
         return ret;
     }
 
@@ -105,24 +111,20 @@ public class ArrayDeque<T> {
         if (mySize == 0) {
             return null;
         }
-        T ret = elems[Tail()];
-        elems[Tail()] = null;
+        checkResize();
+        T ret = elems[getTail()];
+        elems[getTail()] = null;
         tail--;
-
         mySize--;
         checkResize();
+
         return ret;
     }
 
     public T get(int index) {
-        int i = 0, j = 0;
-        for (i = head, j = 0; i <= tail && j < index; i++, j++) {
-            if (i == 0) {
-                i++;
-            }
-        };
-        
-        if (j != index) {
+        int i, j;
+        for (i = head, j = 0; i <= tail && j < index; i++, j++);
+        if (i > tail) {
             return null;
         } else {
             return elems[Math.floorMod(i, capacity)];

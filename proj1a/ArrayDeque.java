@@ -92,6 +92,7 @@ public class ArrayDeque<T> {
             // T demo = elems[Math.floorMod(i, capacity)];
             System.out.print(elems[Math.floorMod(i, capacity)] + " ");
         }
+        System.out.println();
     }
 
     public T removeFirst() {
@@ -101,7 +102,9 @@ public class ArrayDeque<T> {
         checkResize();
         T ret = elems[getHead()];
         elems[getHead()] = null;
-        head++;
+        if (head != tail) {
+            head++;
+        }
         mySize--;
         checkResize();
 
@@ -115,7 +118,9 @@ public class ArrayDeque<T> {
         checkResize();
         T ret = elems[getTail()];
         elems[getTail()] = null;
-        tail--;
+        if (head != tail) {
+            tail--;
+        }
         mySize--;
         checkResize();
 

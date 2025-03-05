@@ -24,11 +24,11 @@ public class TestArrayDequeGold {
         while (!str.isEmpty() && !dst.isEmpty()) {
             Integer a = str.removeLast();
             Integer b = dst.removeLast();
-            assertEquals("error", a, b);
+            assertEquals(a, b);
             if (!str.isEmpty() && !dst.isEmpty()) {
                 a = str.removeFirst();
                 b = dst.removeFirst();
-                assertEquals("error", a, b);
+                assertEquals(a, b);
             }
         }
     }

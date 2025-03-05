@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import javax.naming.event.NamingExceptionEvent;
+
 import static org.junit.Assert.*;
 
 public class TestPalindrome {
@@ -22,9 +24,14 @@ public class TestPalindrome {
         assertTrue("aabaa is a palindrome", palindrome.isPalindrome("aabaa"));
         assertTrue("`a` is a palindrome", palindrome.isPalindrome("a"));
         assertTrue("`ab` is not a palindrome", !palindrome.isPalindrome("ab"));
+        assertTrue("aA is not a palindrome", !palindrome.isPalindrome("aA"));
+        assertTrue("&% is not a palindrome", !palindrome.isPalindrome("&%"));
+
 
         CharacterComparator cc = new OffByOne();
         assertTrue("flake is a ofByOnePalindrome", palindrome.isPalindrome("flake", cc));
+        assertTrue("Flake is a ofByOnePalindrome", !palindrome.isPalindrome("Flake", cc));
         assertTrue("abcd is not a ofByOnePalindrome", !palindrome.isPalindrome("abcd", cc));
+        assertTrue("&% is a ofByOnePalindrome", palindrome.isPalindrome("&%", cc));
     }
 }

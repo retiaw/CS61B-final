@@ -12,6 +12,7 @@ public class Percolation {
     private int N;
     private Status[][] grid;
     private WeightedQuickUnionUF relation; // label: row * N + col; top-site && bottom-site
+    private WeightedQuickUnionUF checkFull;
     private int mySize;
 
     private void inBound(int row, int col) {
@@ -26,6 +27,7 @@ public class Percolation {
         }
 
         relation = new WeightedQuickUnionUF(N * N + 2);
+        checkFull = new WeightedQuickUnionUF(N * N + 1);
         mySize = 0;
 
         this.N = N;
@@ -50,6 +52,7 @@ public class Percolation {
         // union with top-site || bottom-site:
         if (row == 0) {
             relation.union(label, N * N);
+            checkFull.union(label,N * N);
         }
         if (row == N - 1) {
             relation.union(label, N * N + 1);
@@ -57,18 +60,22 @@ public class Percolation {
         // left:
         if (col - 1 >= 0 && grid[row][col - 1] == Status.VACANT) {
             relation.union(label, label - 1);
+            checkFull.union(label, label - 1);
         }
         // right:
         if (col + 1 < N && grid[row][col + 1] == Status.VACANT) {
             relation.union(label, label + 1);
+            checkFull.union(label, label + 1);
         }
         // upper:
         if (label - N >= 0 && grid[row - 1][col] == Status.VACANT) {
             relation.union(label, label - N);
+            checkFull.union(label, label - N);
         }
         // lower:
         if (label + N < N * N && grid[row + 1][col] == Status.VACANT) {
             relation.union(label, label + N);
+            checkFull.union(label, label + N);
         }
     } // O(a);
 
@@ -79,7 +86,7 @@ public class Percolation {
 
     public boolean isFull(int row, int col) { // is the site (row, col) full?
         inBound(row, col);
-        return relation.connected(row * N + col, N * N);
+        return checkFull.connected(row * N + col, N * N);
     } // O(a);
 
     public int numberOfOpenSites() { // number of open sites

@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class PercolationStats {
 
-    public ArrayList<Double> canPercolate = new ArrayList<>();
+    private ArrayList<Double> canPercolate = new ArrayList<>();
 
     public PercolationStats(int N, int T, PercolationFactory pf) {
         if (N <= 0 || T <= 0) {

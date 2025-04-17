@@ -50,15 +50,16 @@ public class Percolation {
         // union with top-site || bottom-site:
         if (row == 0) {
             relation.union(label, N * N);
-        } else if (row == N - 1) {
+        }
+        if (row == N - 1) {
             relation.union(label, N * N + 1);
         }
         // left:
-        if (label - 1 >= 0 && grid[row][col - 1] == status.VACANT) {
+        if (col - 1 >= 0 && grid[row][col - 1] == status.VACANT) {
             relation.union(label, label - 1);
         }
         // right:
-        if (label + 1 < N * N && grid[row][col + 1] == status.VACANT) {
+        if (col + 1 < N && grid[row][col + 1] == status.VACANT) {
             relation.union(label, label + 1);
         }
         // upper:

@@ -1,5 +1,5 @@
 package hw2;
-import edu.princeton.cs.algs4.RandomSeq;
+// import edu.princeton.cs.algs4.RandomSeq;
 import edu.princeton.cs.introcs.StdRandom;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ public class PercolationStats {
         int max = N;
         for (int i = 0; i < T; i++) {
             Percolation test = pf.make(N);
-            while (!test.percolates()) {
+        while (!test.percolates()) {
             int rand1 = StdRandom.uniform(min, max);
             int rand2 = StdRandom.uniform(min, max);
             test.open(rand1, rand2);

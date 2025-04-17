@@ -5,12 +5,12 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
 
-    private enum status {
+    private enum Status {
         VACANT, BLOCK;
     }
 
     private int N;
-    private status[][] grid;
+    private Status[][] grid;
     private WeightedQuickUnionUF relation; // label: row * N + col; top-site && bottom-site
     private int mySize;
 
@@ -29,21 +29,21 @@ public class Percolation {
         mySize = 0;
 
         this.N = N;
-        grid = new status[N][N];
+        grid = new Status[N][N];
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                grid[i][j] = status.BLOCK;
+                grid[i][j] = Status.BLOCK;
             }
         }
     } // O(N^2);
 
     public void open(int row, int col) { // open the site (row, col) if it is not open already
         inBound(row, col);
-        if (grid[row][col] == status.VACANT) {
+        if (grid[row][col] == Status.VACANT) {
             return;
         }
 
-        grid[row][col] = status.VACANT;
+        grid[row][col] = Status.VACANT;
         mySize++;
 
         int label = row * N + col;
@@ -55,26 +55,26 @@ public class Percolation {
             relation.union(label, N * N + 1);
         }
         // left:
-        if (col - 1 >= 0 && grid[row][col - 1] == status.VACANT) {
+        if (col - 1 >= 0 && grid[row][col - 1] == Status.VACANT) {
             relation.union(label, label - 1);
         }
         // right:
-        if (col + 1 < N && grid[row][col + 1] == status.VACANT) {
+        if (col + 1 < N && grid[row][col + 1] == Status.VACANT) {
             relation.union(label, label + 1);
         }
         // upper:
-        if (label - N >= 0 && grid[row - 1][col] == status.VACANT) {
+        if (label - N >= 0 && grid[row - 1][col] == Status.VACANT) {
             relation.union(label, label - N);
         }
         // lower:
-        if (label + N < N * N && grid[row + 1][col] == status.VACANT) {
+        if (label + N < N * N && grid[row + 1][col] == Status.VACANT) {
             relation.union(label, label + N);
         }
     } // O(a);
 
     public boolean isOpen(int row, int col) { // is the site (row, col) open?
         inBound(row, col);
-        return grid[row][col] == status.VACANT;
+        return grid[row][col] == Status.VACANT;
     } // O(1);
 
     public boolean isFull(int row, int col) { // is the site (row, col) full?

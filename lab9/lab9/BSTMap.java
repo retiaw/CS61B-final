@@ -87,8 +87,10 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
      */
     @Override
     public void put(K key, V value) {
+        if (!containsKey(key)) {
+            size++;
+        }
         root = putHelper(key, value, root);
-        size++;
     }
 
     /* Returns the number of key-value mappings in this map. */
@@ -143,7 +145,8 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
                         predecessor = predecessor.right;
                     }
                     // sign:
-                    node = predecessor;
+                    node.key = predecessor.key;
+                    node.value = predecessor.value;
                     // remove:
                     removeHelper(predecessor.key, node.left);
                     return node;
@@ -174,9 +177,9 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
     @Override
     public V remove(K key, V value) {
         V ret = get(key);
-        if (ret == value && ret != null) {
-            root = removeHelper(key, root);
+        if (ret == value) {
             size--;
+            removeHelper(key, root);
             return ret;
         } else {
             return null;
@@ -188,7 +191,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
         private Stack<Node> stack;
 
         private void addLeft(Node node) {
-            if (node != null) {
+            while (node != null) {
                 stack.push(node);
                 node = node.left;
             }
@@ -203,7 +206,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V> {
 
         @Override
         public boolean hasNext() {
-            return !stack.isEmpty();
+            return !stack.empty();
         }
 
         @Override

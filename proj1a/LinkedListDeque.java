@@ -1,4 +1,4 @@
-public class LinkedListDeque<T> {
+public class LinkedListDeque<T> implements Deque<T> {
 
     private class Node {
         T data;
@@ -7,6 +7,10 @@ public class LinkedListDeque<T> {
     }
     private int mySize;
     private Node sentinel;
+
+    public int getMySize() {
+        return mySize;
+    }
 
     public LinkedListDeque() {
         mySize = 0;
@@ -17,10 +21,11 @@ public class LinkedListDeque<T> {
         sentinel.next = sentinel;
     }
 
-    public void addFirst(T value) {
+    @Override
+    public void addFirst(T item) {
         Node newNode = new Node();
         // middle:
-        newNode.data = value;
+        newNode.data = item;
         newNode.next = sentinel.next;
         newNode.prev = sentinel;
         // right:
@@ -31,10 +36,11 @@ public class LinkedListDeque<T> {
         mySize++;
     }
 
-    public void addLast(T value) {
+    @Override
+    public void addLast(T item) {
         Node newNode = new Node();
         // middle:
-        newNode.data = value;
+        newNode.data = item;
         newNode.prev = sentinel.prev;
         newNode.next = sentinel;
         // left:
@@ -45,20 +51,24 @@ public class LinkedListDeque<T> {
         mySize++;
     }
 
+    @Override
     public boolean isEmpty() {
         return (mySize == 0);
     }
 
+    @Override
     public int size() {
         return mySize;
     }
 
+    @Override
     public void printDeque() {
         for (Node i = sentinel.next; i != sentinel; i = i.next) {
             System.out.print(i.data + " ");
         }
     }
 
+    @Override
     public T removeFirst() {
         if (mySize == 0) {
             return null;
@@ -73,6 +83,7 @@ public class LinkedListDeque<T> {
         return ret;
     }
 
+    @Override
     public T removeLast() {
         if (mySize == 0) {
             return null;
@@ -89,6 +100,7 @@ public class LinkedListDeque<T> {
 
     // Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
     // If no such item exists, returns null. Must not alter the deque!
+    @Override
     public T get(int index) {
         int j = 0;
         Node i = null;

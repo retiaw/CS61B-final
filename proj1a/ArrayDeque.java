@@ -1,4 +1,4 @@
-public class ArrayDeque<T> {
+public class ArrayDeque<T> implements Deque<T> {
     private int head, tail;
     private int mySize, capacity;
     private T[] elems;
@@ -53,10 +53,11 @@ public class ArrayDeque<T> {
         }
     }
 
+    @Override
     public void addFirst(T item) {
         checkResize();
         if (mySize == 0) {
-            elems[getHead()] = item;
+            elems[getHead()] = item; // 不要用head， 因为如果调用remove， 不知道head最后会指向哪里， 可能会是一个负数；
             mySize++;
         } else {
             head--;
@@ -66,6 +67,7 @@ public class ArrayDeque<T> {
         checkResize();
     }
 
+    @Override
     public void addLast(T item) {
         checkResize();
         if (mySize == 0) {
@@ -79,14 +81,17 @@ public class ArrayDeque<T> {
         checkResize();
     }
 
+    @Override
     public boolean isEmpty() {
         return (mySize == 0);
     }
 
+    @Override
     public int size() {
         return mySize;
     }
 
+    @Override
     public void printDeque() {
         for (int i = head; i <= tail; i++) {
             // T demo = elems[Math.floorMod(i, capacity)];
@@ -95,6 +100,7 @@ public class ArrayDeque<T> {
         System.out.println();
     }
 
+    @Override
     public T removeFirst() {
         if (mySize == 0) {
             return null;
@@ -102,7 +108,7 @@ public class ArrayDeque<T> {
         checkResize();
         T ret = elems[getHead()];
         elems[getHead()] = null;
-        if (head != tail) {
+        if (head != tail) { // 如果head == tail 证明只剩下一个元素了， 我们需要回到初始状态， 即head == tail， head++ 会破坏数组结构；
             head++;
         }
         mySize--;
@@ -111,6 +117,7 @@ public class ArrayDeque<T> {
         return ret;
     }
 
+    @Override
     public T removeLast() {
         if (mySize == 0) {
             return null;
@@ -127,6 +134,7 @@ public class ArrayDeque<T> {
         return ret;
     }
 
+    @Override
     public T get(int index) {
         int i, j;
         for (i = head, j = 0; i <= tail && j < index; i++, j++);
